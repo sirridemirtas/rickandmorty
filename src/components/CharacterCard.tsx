@@ -7,7 +7,7 @@ interface CharacterCardProps {
 
 export const CharacterCard = ({ character }: CharacterCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden transition-shadow cursor-pointer">
+    <div className="bg-white rounded-3xl shadow-sm overflow-hidden transition-shadow cursor-pointer hover:shadow-md">
       <div className="aspect-square relative">
         <img
           src={character.image}
@@ -15,7 +15,7 @@ export const CharacterCard = ({ character }: CharacterCardProps) => {
           className="absolute w-full h-full object-contain"
         />
       </div>
-      <div className="p-4">
+      <div className="p-6">
         <h3 className="text-xl font-bold mb-2">{character.name}</h3>
         <div className="space-y-1">
           <p className="text-sm">

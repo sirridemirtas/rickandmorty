@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { RickAndMortyService } from "@/services/api";
 import { CharacterCard } from "@/components/CharacterCard";
 import { Character, FilterOptions } from "@/types";
+import { Check } from "lucide-react";
 
 export const CharacterList = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -43,32 +44,40 @@ export const CharacterList = () => {
     setCurrentPage(1);
   };
 
+  const renderFilterButton = (
+    filterType: keyof FilterOptions,
+    value: string,
+    label: string
+  ) => {
+    const isSelected = filters[filterType] === value;
+    return (
+      <button
+        className={`px-4 py-2 border rounded-full flex items-center gap-2 ${
+          isSelected ? "bg-black text-white" : "bg-white text-black"
+        }`}
+        onClick={() =>
+          handleFilterChange(filterType, isSelected ? undefined : value)
+        }
+      >
+        {isSelected && <Check className="w-4 h-4" />}
+        {label}
+      </button>
+    );
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Filters */}
-      <div className="mb-8 flex gap-4">
-        <select
-          className="p-2 border rounded-md"
-          onChange={(e) => handleFilterChange("status", e.target.value)}
-          value={filters.status || ""}
-        >
-          <option value="">All Status</option>
-          <option value="Alive">Alive</option>
-          <option value="Dead">Dead</option>
-          <option value="unknown">Unknown</option>
-        </select>
-
-        <select
-          className="p-2 border rounded-md"
-          onChange={(e) => handleFilterChange("gender", e.target.value)}
-          value={filters.gender || ""}
-        >
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Genderless">Genderless</option>
-          <option value="unknown">Unknown</option>
-        </select>
+      {/* Sticky Filters */}
+      <div className="sticky top-0 bg-neutral-100 z-10 py-4 mb-8 overflow-x-auto">
+        <div className="flex gap-4 justify-center">
+          {renderFilterButton("status", "Alive", "Alive")}
+          {renderFilterButton("status", "Dead", "Dead")}
+          {renderFilterButton("status", "unknown", "Unknown")}
+          {renderFilterButton("gender", "Male", "Male")}
+          {renderFilterButton("gender", "Female", "Female")}
+          {renderFilterButton("gender", "Genderless", "Genderless")}
+          {renderFilterButton("gender", "unknown", "Unknown")}
+        </div>
       </div>
 
       {/* Loading State */}
